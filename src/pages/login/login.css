@@ -63,6 +63,10 @@
     cursor: pointer;
 }
 
+.loginButton:disabled {
+    cursor: not-allowed;
+}
+
 .loginForgot {
     font-size: 18px;
     color: #1775ee;

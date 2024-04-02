@@ -59,6 +59,7 @@ export default function Profile() {
             </div>
             <div className="profileRightBottom">
               <Feed username={params.username}/>
+              {/* {console.log(params.username)} */}
               <Rightbar user={user} />
             </div>
           </div>

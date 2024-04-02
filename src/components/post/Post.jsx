@@ -1,7 +1,11 @@
 import "./post.css";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useContext } from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import {AuthContext} from "../../context/AuthContext";
+import axios from "axios";
+
 
 const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 const HOST = process.env.REACT_APP_API_HOST;
@@ -10,8 +14,15 @@ export default function Post({ post }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState({});
+  const {user:currentUser} = useContext(AuthContext);
 
-  const clickHandler = () => {
+  const clickHandler = async() => {
+    try {
+      const res = await axios.put(HOST+`/api/posts/${currentUser._id.$oid}/like`)
+    } catch (error) {
+      
+    }
+    
     setLike(isLiked ? like - 1 : like + 1);
     setIsLiked(!isLiked);
   };
@@ -30,21 +41,27 @@ export default function Post({ post }) {
       setUser(json);
     };
     fetchUser();
-  }, [post.userId]);
+  }, [post.userId]);  
+  
+
   return (
     <div className="post">
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
-            <Link to={`profile/${user.username}`}>
+            <Link to={`/profile/${user.username}`}>
               <img
-                src={ PF + user.profilePicture || PF + "person/noavatar.png"}
+                src={
+                  user.profilePicture
+                    ? PF + user.profilePicture
+                    : PF + "person/noavatar.png"
+                }
                 alt=""
                 className="postProfileImg"
               />
             </Link>
             <span className="postUsername">{user.username}</span>
-            <span className="postDate">{post.createdAt}</span>
+            <span className="postDate">{}</span>
           </div>
           <div className="postTopRight">
             <MoreVertIcon />
